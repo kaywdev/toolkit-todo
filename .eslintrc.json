@@ -14,5 +14,7 @@
   "env": { "browser": true, "node": true, "es6": true },
   "rules": {
     // 適当なルール
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error"
   }
 }

@@ -9,7 +9,11 @@ type Inputs = {
   taskTitle: string;
 };
 
-const TaskForm: React.FC = () => {
+type PropTypes = {
+  edit?: boolean;
+};
+
+const TaskForm: React.FC<PropTypes> = ({ edit }) => {
   const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm();
   const handleCreate = (data: Inputs) => {
@@ -17,17 +21,34 @@ const TaskForm: React.FC = () => {
     dispatch(createTask(data.taskTitle));
     reset();
   };
+  const handleEdit = (data: Inputs) => {
+    console.log(data);
+  };
   return (
     <div className={styles.root}>
-      <form onSubmit={handleSubmit(handleCreate)} className={styles.form}>
+      <form
+        onSubmit={edit ? handleSubmit(handleEdit) : handleSubmit(handleCreate)}
+        className={styles.form}
+      >
         <TextField
           id="outlined-basic"
-          label="New Task"
+          label={edit ? "Edit Task" : "New Task"}
+          defaultValue={edit ? "defaultValue" : ""}
           variant="outlined"
           inputRef={register}
           name="taskTitle"
           className={styles.text_field}
         />
+        {edit ? (
+          <div className={styles.button_wrapper}>
+            <button type="submit" className={styles.submit_button}>
+              Submit
+            </button>
+            <button type="button" className={styles.cancel_button}>
+              Cancel
+            </button>
+          </div>
+        ) : null}
       </form>
     </div>
   );

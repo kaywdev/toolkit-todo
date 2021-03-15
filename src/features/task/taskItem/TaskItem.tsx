@@ -3,6 +3,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import EventNoteIcon from "@material-ui/icons/EventNote";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import Modal from "@material-ui/core/Modal";
+import TaskForm from "../taskForm/TaskForm";
 import styles from "./TaskItem.module.scss";
 
 interface PropTypes {
@@ -10,6 +12,15 @@ interface PropTypes {
 }
 
 const TaskItem: React.FC<PropTypes> = ({ task }) => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div className={styles.root}>
       <div className={styles.title}>
@@ -22,13 +33,22 @@ const TaskItem: React.FC<PropTypes> = ({ task }) => {
           onClick={() => console.log(`check ${task.id}`)}
           className={styles.checkbox}
         />
-        <button>
-          <EditIcon onClick={() => console.log(`edit ${task.id}`)} />
+        <button onClick={handleOpen} className={styles.edit_button}>
+          <EditIcon className={styles.icon} />
         </button>
-        <button>
-          <DeleteIcon onClick={() => console.log(`delete ${task.id}`)} />
+        <button
+          onClick={() => console.log(`delete ${task.id}`)}
+          className={styles.delete_button}
+        >
+          <DeleteIcon className={styles.icon} />
         </button>
       </div>
+      <Modal open={open} onClose={handleClose} className={styles.modal}>
+        <div className={styles.modal_content}>
+          <div className={styles.modal_title}>Edit</div>
+          <TaskForm edit />
+        </div>
+      </Modal>
     </div>
   );
 };
